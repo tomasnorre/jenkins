@@ -26,7 +26,7 @@ bash "install_jenkins_plugin" do
   cwd "/tmp"
   code <<-EOH
   java -jar /var/cache/jenkins/war/WEB-INF/jenkins-cli.jar -s http://127.0.0.1:8080/ install-plugin greenballs credentials ssh-credentials git git-client token-macro scm-api gravatar
-  java -jar /var/cache/jenkins/war/WEB-INF/jenkins-cli.jar -s http://127.0.0.1:8080/ install-plugin template-project run-condition flexible-publish envfile
+  java -jar /var/cache/jenkins/war/WEB-INF/jenkins-cli.jar -s http://127.0.0.1:8080/ install-plugin template-project run-condition flexible-publish envfile envinject
   EOH
   notifies :restart, 'service[jenkins]'
 end
