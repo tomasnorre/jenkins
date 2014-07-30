@@ -9,7 +9,7 @@
 
 jenkins_cli = "/run/jenkins/war/WEB-INF/jenkins-cli.jar"
 if defined? node['jenkins']['cli'] && node['jenkins']['cli']
-  jenkins_cli = "#{node['jenkins']['cli']}"
+  jenkins_cli = node['jenkins']['cli']
 end
 
 # Install required packages
