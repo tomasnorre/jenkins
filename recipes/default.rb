@@ -7,6 +7,11 @@
 # All rights reserved - Do Not Redistribute
 #
 
+jenkins_cli = "/run/jenkins/war/WEB-INF/jenkins-cli.jar"
+if defined? node[project_name]['install-frontend-devtools'] && node[project_name]['install-frontend-devtools']
+  jenkins_cli = "#{node['jenkins']['cli']}"
+end
+
 # Install required packages
 %w{jenkins}.each do |pkg|
   package pkg do
@@ -25,8 +30,8 @@ bash "install_jenkins_plugin" do
   user "root"
   cwd "/tmp"
   code <<-EOH
-  java -jar /var/cache/jenkins/war/WEB-INF/jenkins-cli.jar -s http://127.0.0.1:8080/ install-plugin greenballs credentials ssh-credentials git git-client token-macro scm-api gravatar
-  java -jar /var/cache/jenkins/war/WEB-INF/jenkins-cli.jar -s http://127.0.0.1:8080/ install-plugin template-project run-condition flexible-publish envfile envinject
+  java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ install-plugin greenballs credentials ssh-credentials git git-client token-macro scm-api gravatar
+  java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ install-plugin template-project run-condition flexible-publish envfile envinject
   EOH
   notifies :restart, 'service[jenkins]'
 end
