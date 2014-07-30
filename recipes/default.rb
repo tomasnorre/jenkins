@@ -8,7 +8,7 @@
 #
 
 jenkins_cli = "/run/jenkins/war/WEB-INF/jenkins-cli.jar"
-if defined? node[project_name]['install-frontend-devtools'] && node[project_name]['install-frontend-devtools']
+if defined? node['jenkins']['cli'] && node['jenkins']['cli']
   jenkins_cli = "#{node['jenkins']['cli']}"
 end
 
