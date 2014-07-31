@@ -13,7 +13,7 @@ if defined? node['jenkins']['cli'] && node['jenkins']['cli']
 end
 
 # Install required packages
-%w{jenkins}.each do |pkg|
+%w(jenkins).each do |pkg|
   package pkg do
     action :install
   end
