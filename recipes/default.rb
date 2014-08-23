@@ -40,6 +40,7 @@ bash 'install_jenkins_plugin' do
   java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ credentials ssh-credentials scm-api gravatar
   java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ install-plugin template-project run-condition
   java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ flexible-publish envfile envinject ws-cleanup
+  java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ config-autorefresh-plugin
   EOH
   notifies :restart, 'service[jenkins]'
 end
