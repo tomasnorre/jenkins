@@ -26,9 +26,9 @@ service 'jenkins' do
 end
 
 #
-group 'www-data' do
+group 'rvm' do
   action :modify
-  members 'maintenance'
+  members 'jenkins'
   append true
 end
 
@@ -39,7 +39,7 @@ bash 'install_jenkins_plugin' do
   java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ install-plugin greenballs git git-client token-macro
   java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ credentials ssh-credentials scm-api gravatar
   java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ install-plugin template-project run-condition
-  java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ flexible-publish envfile envinject
+  java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ flexible-publish envfile envinject ws-cleanup
   EOH
   notifies :restart, 'service[jenkins]'
 end
