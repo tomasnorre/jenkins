@@ -37,10 +37,10 @@ bash 'install_jenkins_plugin' do
   cwd '/tmp'
   code <<-EOH
   java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ install-plugin greenballs git git-client token-macro
-  java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ credentials ssh-credentials scm-api gravatar
+  java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ install-plugin credentials ssh-credentials scm-api gravatar
   java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ install-plugin template-project run-condition
-  java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ flexible-publish envfile envinject ws-cleanup
-  java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ config-autorefresh-plugin
+  java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ install-plugin flexible-publish envfile envinject ws-cleanup
+  java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ install-plugin config-autorefresh-plugin
   EOH
   notifies :restart, 'service[jenkins]'
 end
