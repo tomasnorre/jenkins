@@ -36,7 +36,8 @@ bash 'install_jenkins_plugin' do
   user 'root'
   cwd '/tmp'
   code <<-EOH
-  curl  -L http://updates.jenkins-ci.org/update-center.json | sed '1d;$d' | curl -X POST -H 'Accept: application/json' -d @- http://localhost:8080/updateCenter/byId/default/postBack
+  curl  -L http://updates.jenkins-ci.org/update-center.json > uc.json
+  sed '1d;$d' uc.json | curl -X POST -H 'Accept: application/json' -d @- http://localhost:8080/updateCenter/byId/default/postBack
   java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ install-plugin greenballs git git-client token-macro
   java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ install-plugin credentials ssh-credentials scm-api gravatar
   java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ install-plugin template-project run-condition
