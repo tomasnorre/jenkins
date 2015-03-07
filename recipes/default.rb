@@ -44,6 +44,12 @@ group 'rvm' do
   append true
 end
 
+group 'www-data' do
+  action :modify
+  members 'jenkins'
+  append true
+end
+
 bash 'install_jenkins_plugin' do
   user 'root'
   cwd '/tmp'
