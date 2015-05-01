@@ -1,0 +1,25 @@
+rvm:
+  - 1.9.3
+  - 2.0.0
+script:
+  - >
+    cat > Gemfile <<"EOF"
+    source 'https://rubygems.org'
+    gem 'foodcritic', '>= 1.3.0'
+    EOF
+
+  - rvm use --install --create ruby@devops-cookbooks
+  - export > rvm.env
+  - >
+    if ! gem spec "bundler" > /dev/null 2>&1; then
+      gem install bundler --no-ri --no-rdoc
+    fi
+
+  - bundle install
+  - echo "################################# foodcritic start:"
+  - >
+    if [ -z "${FOODCRITIC_OPTS}" ]; then
+      foodcritic --epic-fail any .
+    else
+      foodcritic "${FOODCRITIC_OPTS}" --epic-fail any .
+    fi
