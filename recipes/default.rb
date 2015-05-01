@@ -2,7 +2,7 @@
 # Cookbook Name:: jenkins
 # Recipe:: default
 #
-# Copyright 2014, Tomas Norre
+# Copyright 2015, Tomas Norre
 #
 # All rights reserved - Do Not Redistribute
 #
@@ -12,6 +12,11 @@ private_key = '/var/lib/jenkins/.ssh/id_rsa'
 if defined? node['jenkins']['cli'] && node['jenkins']['cli']
   jenkins_cli = node['jenkins']['cli']
 end
+
+if defined? node['jenkins']['plugins'] && node['jenkins']['plugins']
+  jenkins_plugins = node['jenkins']['plugins'].sort().join(" ")
+end
+
 
 bash 'add_jenkins_to_apt' do
   user 'root'
@@ -50,16 +55,46 @@ group 'www-data' do
   append true
 end
 
+bash 'Create list of plugins wanted to be installed' do
+  user 'root'
+  cwd '/tmp'
+  code <<-EOH
+    rm jenkins-plugins-wanted
+    for p in #{jenkins_plugins}; do echo $p >> jenkins-plugins-wanted ; done
+    EOH
+end
+
+bash 'Check plugins installed' do
+  user 'root'
+  cwd '/tmp'
+  code <<-EOH
+    rm jenkins-plugins-installed
+    java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ -i #{private_key} list-plugins >> jenkins-plugins-installed
+    awk '{print $1}' jenkins-plugins-installed > jenkins-plugins-installed-tmp
+    rm jenkins-plugins-installed
+    sort jenkins-plugins-installed-tmp > jenkins-plugins-installed
+    rm jenkins-plugins-installed-tmp
+    EOH
+end
+
+bash 'Check list of plugins to install' do
+  user 'root'
+  cwd '/tmp'
+  code <<-EOH
+    grep -v -f jenkins-plugins-installed jenkins-plugins-wanted > jenkins-plugins-to-install
+    rm jenkins-plugins-installed jenkins-plugins-wanted
+    EOH
+end
+
 bash 'install_jenkins_plugin' do
   user 'root'
   cwd '/tmp'
   code <<-EOH
   curl  -L http://updates.jenkins-ci.org/update-center.json | sed '1d;$d' | curl -X POST -H 'Accept: application/json' -d @- http://localhost:8080/updateCenter/byId/default/postBack
-  java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ -i #{private_key} install-plugin greenballs git git-client token-macro
-  java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ -i #{private_key} install-plugin credentials ssh-credentials scm-api gravatar
-  java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ -i #{private_key} install-plugin template-project run-condition
-  java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ -i #{private_key} install-plugin flexible-publish envfile envinject ws-cleanup
-  java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ -i #{private_key} install-plugin config-autorefresh-plugin build-pipeline-plugin
+  for p in `cat jenkins-plugins-to-install` ; do
+    java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ -i #{private_key} install-plugin $p ;
+  done
   EOH
+  not_if { File.zero?("/tmp/jenkins-plugins-to-install") }
   notifies :restart, 'service[jenkins]'
 end

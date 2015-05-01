@@ -1,16 +1,23 @@
 Jenkins Cookbook
 ================
 
-This cookbook installs jenkins on your Ubuntu or Debian system
+This cookbook installs Jenkins on your Ubuntu or Debian system
 
 Usage
 -----
-e.g.
-Just include `jenkins` in your node's `run_list`:
+
+Include `jenkins` in your node's `run_list` and add your list of jenkins-plugins to install:
 
 ```json
 {
-  "name":"my_node",
+  "jenkins": {
+    "plugins": [
+      "greenballs",
+      "git",
+      "build-pipeline-plugin",
+      "credentials"
+    ]
+  },
   "run_list": [
     "recipe[jenkins]"
   ]
@@ -18,14 +25,29 @@ Just include `jenkins` in your node's `run_list`:
 ```
 
 This cookbook creates a system user "jenkins", it's recommended to create a ssh key pair for this user, and map it to a jenkins user, that can install plugins etc.
-The second you active login on jenkins, you will not be able to install plugins through this cookbook anymore without this set.
 
-```text
-sudo su jenkins
-ssh-keygen -t rsa -C "jenkins@domain.tld"
+```sh
+$ sudo su jenkins
+$ ssh-keygen -t rsa -C "jenkins@domain.tld"
 ```
 
-License and Authors
--------------------
+Options
+-------
+
+If the `jenkins-cli.jar` is not located in `/run/jenkins/war/WEB-INF/` which is the cookbook default, then you can set it in you node configuration
+
+```json
+{
+    "jenkins": {
+        "cli": "/run/jenkins/war/WEB-INF/jenkins-cli.jar",
+    },
+    "run_list": [
+        "recipe[jenkins]"
+    ]
+}
+```
+
+Authors
+-------
 Authors:
-  * Tomas Norre Mikkelsen
+  * [Tomas Norre Mikkelsen](http://github.com/tomasnorre)
