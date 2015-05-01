@@ -17,7 +17,6 @@ if defined? node['jenkins']['plugins'] && node['jenkins']['plugins']
   jenkins_plugins = node['jenkins']['plugins'].sort.join(' ')
 end
 
-
 bash 'add_jenkins_to_apt' do
   user 'root'
   cwd '/tmp'
