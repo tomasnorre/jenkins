@@ -34,7 +34,7 @@ $ ssh-keygen -t rsa -C "jenkins@domain.tld"
 Options
 -------
 
-If the `jenkins-cli.jar` is not located in `/run/jenkins/war/WEB-INF/` which is the cookbook default, then you can set it in you node configuration
+If the `jenkins-cli.jar` is not located in `/run/jenkins/war/WEB-INF/` which is the cookbook default, then you can set it in your node configuration
 
 ```json
 {
@@ -49,5 +49,4 @@ If the `jenkins-cli.jar` is not located in `/run/jenkins/war/WEB-INF/` which is 
 
 Authors
 -------
-Authors:
   * [Tomas Norre Mikkelsen](http://github.com/tomasnorre)
