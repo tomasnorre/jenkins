@@ -3,6 +3,10 @@ Jenkins Cookbook
 
 This cookbook installs Jenkins on your Ubuntu or Debian system
 
+Build status
+------------
+[![Build Status](https://travis-ci.org/tomasnorre/jenkins.svg)](https://travis-ci.org/tomasnorre/jenkins)
+
 Usage
 -----
 
