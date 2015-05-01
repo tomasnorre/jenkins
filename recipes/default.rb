@@ -86,15 +86,17 @@ bash 'Check list of plugins to install' do
     EOH
 end
 
+# http://goo.gl/FPN3Sf > http://updates.jenkins-ci.org/update-center.json
+# http://goo.gl/2QwRkS > http://localhost:8080/updateCenter/byId/default/postBack
 bash 'install_jenkins_plugin' do
   user 'root'
   cwd '/tmp'
   code <<-EOH
-  curl -L http://updates.jenkins-ci.org/update-center.json | sed '1d;$d' | curl -X POST -H 'Accept: application/json' -d @- http://localhost:8080/updateCenter/byId/default/postBack
-  for p in `cat jenkins-plugins-to-install` ; do
-    java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ -i #{private_key} install-plugin $p ;
-  done
-  EOH
+    curl -L http://goo.gl/FPN3Sf | sed '1d;$d' | curl -X POST -H 'Accept: application/json' -d @- http://goo.gl/2QwRkS
+    for p in `cat jenkins-plugins-to-install` ; do
+      java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ -i #{private_key} install-plugin $p ;
+    done
+    EOH
   not_if { File.zero?('/tmp/jenkins-plugins-to-install') }
   notifies :restart, 'service[jenkins]'
 end
