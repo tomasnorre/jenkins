@@ -14,7 +14,7 @@ if defined? node['jenkins']['cli'] && node['jenkins']['cli']
 end
 
 if defined? node['jenkins']['plugins'] && node['jenkins']['plugins']
-  jenkins_plugins = node['jenkins']['plugins'].sort().join(" ")
+  jenkins_plugins = node['jenkins']['plugins'].sort.join(' ')
 end
 
 
@@ -95,6 +95,6 @@ bash 'install_jenkins_plugin' do
     java -jar #{jenkins_cli} -s http://127.0.0.1:8080/ -i #{private_key} install-plugin $p ;
   done
   EOH
-  not_if { File.zero?("/tmp/jenkins-plugins-to-install") }
+  not_if { File.zero?('/tmp/jenkins-plugins-to-install') }
   notifies :restart, 'service[jenkins]'
 end
