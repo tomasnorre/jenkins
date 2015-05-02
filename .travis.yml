@@ -1,8 +1,11 @@
 language: ruby
 gemfile:
    - tests/Gemfile
+bundler_args: --without kitchen_vagrant --without development
 rvm:
   - 1.9.3
   - 2.0.0
+  - 2.2.0
 script:
-  - bundle exec rake foodcritic
+  - bundle exec rubocop
+  - bundle exec foodcritic -f any .
