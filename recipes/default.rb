@@ -7,11 +7,10 @@
 # All rights reserved - Do Not Redistribute
 #
 
-jenkins_cli = '/run/jenkins/war/WEB-INF/jenkins-cli.jar'
 private_key = '/var/lib/jenkins/.ssh/id_rsa'
-if defined? node['jenkins']['cli'] && node['jenkins']['cli']
-  jenkins_cli = node['jenkins']['cli']
-end
+
+# Setting Jenkins_cli
+node['jenkins']['cli'] ? jenkins_cli = node['jenkins']['cli'] : jenkins_cli = '/run/jenkins/war/WEB-INF/jenkins-cli.jar'
 
 if defined? node['jenkins']['plugins'] && node['jenkins']['plugins']
   jenkins_plugins = node['jenkins']['plugins'].sort.join(' ')
