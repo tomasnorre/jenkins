@@ -33,6 +33,7 @@ This cookbook creates a system user "jenkins", it's recommended to create a ssh 
 ```sh
 $ sudo su jenkins
 $ ssh-keygen -t rsa -C "jenkins@domain.tld"
+$ cat .ssh/id_rsa.pub >> .ssh/authorized_keys
 ```
 
 Options
