@@ -52,6 +52,15 @@ If the `jenkins-cli.jar` is not located in `/run/jenkins/war/WEB-INF/` which is 
 }
 ```
 
+If you want specify which java version to use it can be done in your node configuration
+
+```json
+    "java": {
+      "install_flavor": "openjdk",
+      "jdk_version": "7"
+    },
+```
+
 Contributing
 ------------
 e.g.

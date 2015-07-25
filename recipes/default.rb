@@ -7,6 +7,8 @@
 # All rights reserved - Do Not Redistribute
 #
 
+include_recipe "java"
+
 private_key = '/var/lib/jenkins/.ssh/id_rsa'
 
 # Setting Jenkins_cli
@@ -51,6 +53,7 @@ group 'www-data' do
   action :modify
   members 'jenkins'
   append true
+  notifies :restart, 'service[jenkins]', :immediately
 end
 
 bash 'Create list of plugins wanted to be installed' do
