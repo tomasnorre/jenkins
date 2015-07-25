@@ -7,7 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
-include_recipe "java"
+include_recipe 'java'
 
 private_key = '/var/lib/jenkins/.ssh/id_rsa'
 
