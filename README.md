@@ -28,7 +28,7 @@ Include `jenkins` in your node's `run_list` and add your list of jenkins-plugins
 }
 ```
 
-This cookbook creates a system user "jenkins", it's recommended to create a ssh key pair for this user, and map it to a jenkins user, that can install plugins etc.
+This cookbook creates a system user "jenkins", it's recommended to create a ssh key pair for this user, and map it to a jenkins user, that can install plugins etc. this can be done under `http://host.tld:8080/user/<username>/configure`
 
 ```sh
 $ sudo su jenkins
